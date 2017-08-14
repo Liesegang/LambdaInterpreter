@@ -42,6 +42,25 @@ def parse_variable(expr):
             i += 1
     return var
 
+def parse_lambda(expr):
+    var = ""
+    i = 0
+
+    if not expr.startswith('/'):
+        raise SyntaxError("Not varid lambda expression. '/' is missinng")
+    i += 1
+
+    var = parse_variable(expr[i:])
+    if len(var) == 0:
+        raise SyntaxError("Not varid lambda expression. 'variable' is missinng")
+    i += len(var)
+
+    if not expr[i] == '.':
+        raise SyntaxError("Not varid lambda expression. '.' is missinng")
+    i += 1
+
+    return Lambda(var, parser(expr[i:]))
+
 
 if __name__ == '__main__':
     # write your code here
