@@ -35,7 +35,8 @@ class Parser(object):
 
     def _eat(self, prediction):
         if self.token.kind == prediction:
-            self._advance()
+            if prediction != 'EOF':
+                self._advance()
         else:
             self._error(prediction)
 
