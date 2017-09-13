@@ -9,7 +9,7 @@ lexer.py
 
 import string
 
-PUNCTATION = ["λ", "|", "(", ")"]
+PUNCTATION = ["λ", "|", "(", ")", "."]
 WHITESPACE = list(string.whitespace)
 
 class Token:
