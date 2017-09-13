@@ -15,4 +15,4 @@ if __name__ == '__main__':
             p = Parser(l)
             print(p.parse())
         except ParserError as discrepancy:
-            print('ParserError: ' + str(discrepancy))
+            print('ParserError: ' + discrepancy.message)

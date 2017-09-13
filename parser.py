@@ -110,8 +110,7 @@ class ParserError(Exception):
         foud (str): The actual type discovered
     """
 
-    def __init___(self, expected, found):
-        message = "Expected: {}, Found: {}".format(expected, found)
-        super(ParserError, self).__init__(message)
+    def __init__(self, expected, found):
+        self.message = "Expected: {}, Found: {}".format(expected, found)
         self.expected = expected
         self.found = found
