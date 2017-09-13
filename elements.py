@@ -46,7 +46,7 @@ class Application(Expression):
         self.right_expression = right_expression
 
     def __str__(self):
-        return "({})({})".format(left_expression, right_expression)
+        return "({})({})".format(self.left_expression, self.right_expression)
 
     def children(self):
         return [self.left_expression, self.right_expression]
