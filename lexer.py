@@ -1,6 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""
+lexer.py
+
+@author liesegang
+"""
+
 import string
 
 PUNCTATION = ["λ", "|", "(", ")"]
@@ -14,6 +20,14 @@ class Token:
         return "Token(kind:'{}' value:{})".format(self.kind, self.value)
 
 class Lexer(object):
+    """An iterator that splits lambda calculus source code into Tokens.
+
+    Attributes:
+        source (str): Lambda calculus source code
+        size (int): The lenght of the source code
+        position (int): Current index in the source
+    """
+
     def __init__(self, source):
         self.source = source
         self.size = len(source)
@@ -23,8 +37,8 @@ class Lexer(object):
         return self
 
     def __next__(self):
+        """Returns the next lexem as a Token object"""
         self._clear_whitespace()
-
         if self.position > self.size:
             raise StopIteration()
         elif self.position == self.size:
@@ -43,8 +57,11 @@ class Lexer(object):
             return Token("SYMBOL", symbol)
 
     def _clear_whitespace(self):
+        """Advances position past any whitespace."""
         while (self.position < self.size and
                 self._present_character() in WHITESPACE):
             self.position += 1
+
     def _present_character(self):
+        """Return a character of source code at current index."""
         return self.source[self.position]
