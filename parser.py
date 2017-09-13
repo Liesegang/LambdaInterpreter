@@ -35,8 +35,7 @@ class Parser(object):
 
     def _eat(self, prediction):
         if self.token.kind == prediction:
-            if prediction != 'EOF':
-                self._advance()
+            self._advance()
         else:
             self._error(prediction)
 
@@ -45,8 +44,10 @@ class Parser(object):
         expression is an application, abstraction, or variable
         """
         if self.token.kind == 'BOF':
+            self._advance()
             return self._application('BOF')
         elif self.token.kind == '(':
+            self._advance()
             return self._application('(')
         elif self.token.kind in ['λ', '@', '|']:
             return self._abstraction()
@@ -57,18 +58,20 @@ class Parser(object):
 
     def _application(self, begin):
         """Returns expression or application"""
-        if begin =='(':
-            end = ')'
+        if begin == '(':
+            end = [')']
         elif begin == 'BOF':
-            end = 'EOF'
+            end = ['EOF']
+        elif begin == None:
+            end = [')', 'EOF']
         else:
             raise Exception("Unown application starter")
 
-        self._advance()
         exp = self._expression()
-        while self.token.kind != end:
+        while not self.token.kind in end:
             exp = Application(exp, self._expression())
-        self._eat(end)
+        if begin == '(':
+            self._eat(')')
         return exp
 
     def _variable(self):
@@ -87,7 +90,7 @@ class Parser(object):
             self._advance()
             variable = self._variable()
             self._eat('.')
-            return Abstraction(variable, self._expression())
+            return Abstraction(variable, self._application(None))
         else:
             self._error(" or ".join(['λ', '@', '|']))
 
