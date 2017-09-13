@@ -21,7 +21,7 @@ class Parser(object):
 
     def __init__(self, lexer):
         self.lexer = lexer
-        self.token = self.lexer.__next__()
+        self.token = next(self.lexer)
 
     def _error(self, expected):
         """Raises a ParserError that compares an expected toke type an the
@@ -31,7 +31,7 @@ class Parser(object):
 
     def _advance(self):
         """Move to the next token"""
-        self.token = self.lexer.__next__()
+        self.token = next(self.lexer)
 
     def _eat(self, prediction):
         if self.token.kind == prediction:
