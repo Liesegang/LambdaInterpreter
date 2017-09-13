@@ -56,14 +56,15 @@ class Parser(object):
 
     def _application(self, begin):
         """Returns expression or application"""
-        if begin ==')':
+        if begin =='(':
             end = ')'
         elif begin == 'BOF':
             end = 'EOF'
-        else
+        else:
             raise Exception("Unown application starter")
 
-        exp = self._expression
+        self._advance()
+        exp = self._expression()
         while self.token.kind != end:
             exp = Application(exp, self._expression())
         self._eat(end)
@@ -72,7 +73,7 @@ class Parser(object):
     def _variable(self):
         """Returns an instance of Variable if the current token is a symbol"""
         if self.token.kind == 'SYMBOL':
-            name = self.tokenvalue
+            name = self.token.value
             self._advance()
             return Variable(name)
         else:
@@ -82,9 +83,9 @@ class Parser(object):
         """Returns an instance of Abstraction if the next series of tokens
         fits the form of a lambda calculus function"""
         if self.token.kind in ['λ', '@', '|']:
-            self._davance()
-            variable = self._variable
-            self.eat('.')
+            self._advance()
+            variable = self._variable()
+            self._eat('.')
             return Abstraction(variable, self._expression())
         else:
             self._error(" or ".join(['λ', '@', '|']))
