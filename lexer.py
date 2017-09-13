@@ -31,13 +31,16 @@ class Lexer(object):
     def __init__(self, source):
         self.source = source
         self.size = len(source)
-        self.position = 0
+        self.position = -1
 
     def __iter__(self):
         return self
 
     def __next__(self):
         """Returns the next lexem as a Token object"""
+        if self.position == -1:
+            self.position += 1
+            return Token('BOF', None)
         self._clear_whitespace()
         if self.position > self.size:
             raise StopIteration()
